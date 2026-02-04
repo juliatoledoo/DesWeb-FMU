@@ -8,16 +8,17 @@ async function loadHTML(id, file) {
     }
   }
 
+// Carrega os componentes fixos
   loadHTML("header", "includes/header.html");
   loadHTML("footer", "includes/footer.html");
 
 // Espera o clique no botão de simulação
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function(e) {
     // Verifica se o elemento clicado é o botão de simular
-    if (event.target && event.target.id === 'simulate-btn') {
-        alert("Simulador iniciado! Redirecionando...");
+    if (e.target && e.target.id === 'simulate-btn'){
+        //alert("Simulador iniciado! Redirecionando...");
         
         // Se você tiver uma página de simulação, mude o caminho abaixo:
-        // window.location.href = "Páginas/login.html"; 
+        window.location.href = "Pages/login.html"; 
     }
 });
