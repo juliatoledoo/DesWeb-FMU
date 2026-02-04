@@ -10,3 +10,14 @@ async function loadHTML(id, file) {
 
   loadHTML("header", "includes/header.html");
   loadHTML("footer", "includes/footer.html");
+
+// Espera o clique no botão de simulação
+document.addEventListener('click', function(event) {
+    // Verifica se o elemento clicado é o botão de simular
+    if (event.target && event.target.id === 'simulate-btn') {
+        alert("Simulador iniciado! Redirecionando...");
+        
+        // Se você tiver uma página de simulação, mude o caminho abaixo:
+        // window.location.href = "Páginas/login.html"; 
+    }
+});
