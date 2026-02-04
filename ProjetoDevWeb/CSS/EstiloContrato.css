@@ -1,9 +1,10 @@
 body {
-    background-image: url(/ProjetoDevWeb/Resources/Fundo05.png);
+    background-image: url('../Resources/Fundo05.png');
     color: white;
     text-align: center;
     font-family: 'Arial', sans-serif;
     background-size: cover;
+    background-attachment: fixed;
   }
 
   h1 {
@@ -18,7 +19,7 @@ body {
     gap: 50px;
   }
 
-  .option:hover {
+  .option {
     border: 2px solid #ff914d;
     padding: 30px;
     cursor: pointer;
@@ -28,7 +29,7 @@ body {
     background-color: #fba068;
   }
 
-  .option {
+  .option:houver {
     border: 2px solid #ff914d;
     padding: 30px;
     cursor: pointer;
