@@ -5,7 +5,7 @@
     font-family: 'Segoe UI', sans-serif;
   }
   
-  body.container {
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
