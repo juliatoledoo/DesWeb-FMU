@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.continuar = function () {
     if (tipoSelecionado) {
       localStorage.setItem("tipoContrato", tipoSelecionado);
-      window.location.href = "/ProjetoDevWeb/Rendas.html";
+      window.location.href = "Rendas.html";
     } else {
       alert("Por favor, selecione um tipo de contrato.");
     }
