@@ -1,5 +1,5 @@
 body {
-    background-image: url('../Resources/Fundo05.png');
+    background-image: url('../Resources/Fundo05.png') !important;
     color: white;
     text-align: center;
     font-family: 'Arial', sans-serif;
