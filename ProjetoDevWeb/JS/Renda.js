@@ -15,7 +15,7 @@ function calcularINSS(salario) {
     } else if (salario <= 7786.02) {
         inss = (1412.00 * 0.075) + (1254.68 * 0.09) + (1333.35 * 0.12) + ((salario - 4000.03) * 0.14);
     } else {
-        inss = 908.85; // Teto máximo do INSS
+        inss = 908.85; 
     }
 
     return inss;
@@ -33,23 +33,30 @@ function salvarRenda() {
     const inputSalario = document.getElementById("salario").value;
     const inputOutras = document.getElementById("outras").value;
 
-    if (inputSalario.trim() === "" || inputSalario === "R$ " || inputSalario === "R$ 0,00") {
+    if (inputSalario === "" || inputSalario === "R$ 0,00" || inputSalario === "R$ ") {
         alert("Por favor, informe o valor do seu salário bruto.");
-        return; 
+        return;
     }
 
-    const limpar = (v) => parseFloat(v.replace("R$ ", "").replace(/\./g, "").replace(",", ".")) || 0;
+    const limpar = (v) => {
+        if (!v) return 0;
+        let limpo = v.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
+        return parseFloat(limpo) || 0;
+    };
 
     const salarioBruto = limpar(inputSalario);
     const outras = limpar(inputOutras);
     
+    console.log("Salário Bruto:", salarioBruto); // Verifique isso no F12
+
     const descontoINSS = calcularINSS(salarioBruto);
     const salarioLiquido = salarioBruto - descontoINSS;
     const totalRenda = salarioLiquido + outras;
 
-    localStorage.setItem("salario", salarioLiquido);
-    localStorage.setItem("outras", outras);
-    localStorage.setItem("totalRenda", totalRenda);
+    localStorage.setItem("salario", salarioLiquido.toFixed(2));
+    localStorage.setItem("outras", outras.toFixed(2));
+    localStorage.setItem("totalRenda", totalRenda.toFixed(2));
 
+    console.log("Sucesso! Redirecionando...");
     window.location.href = "Gastos.html";
 }
