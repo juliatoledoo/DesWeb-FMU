@@ -9,20 +9,47 @@
 </head>
 <body>
 <div class="centro">
-    <h1 class="titulo">GASTOS</h1> <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
-    <hr>
-
-    <div class="container-gastos"> <div class="item-gasto">
-            <label>Moradia (Aluguel, Luz...)</label>
+    <h1 class="titulo">GASTOS</h1>
+    <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
+    
+    <div class="grid-gastos">
+        <div class="campo">
+            <label>Moradia</label>
             <input type="text" id="Moradia" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
         </div>
-
-        <div class="item-gasto">
-            <label>Alimentação (Mercado, Ifood...)</label>
+        <div class="campo">
+            <label>Alimentação</label>
             <input type="text" id="Alimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
         </div>
-
+        <div class="campo">
+            <label>Transporte</label>
+            <input type="text" id="Transporte" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
         </div>
+        <div class="campo">
+            <label>Saúde</label>
+            <input type="text" id="Saude" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+        <div class="campo">
+            <label>Assinaturas</label>
+            <input type="text" id="Assinaturas" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+        <div class="campo">
+            <label>Lazer</label>
+            <input type="text" id="Lazer" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+        <div class="campo">
+            <label>Educação</label>
+            <input type="text" id="Educacao" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+        <div class="campo">
+            <label>Investimento</label>
+            <input type="text" id="Investimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+        <div class="campo">
+            <label>Outros</label>
+            <input type="text" id="Outros" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+    </div>
 
     <button class="botao" onclick="salvarGastos()">CONTINUAR</button>
 </div>
