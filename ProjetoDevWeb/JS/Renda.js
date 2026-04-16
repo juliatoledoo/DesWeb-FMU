@@ -1,21 +1,24 @@
-function calcularINSS(salario) {
-  const tipo = localStorage.getItem("tipoContrato");
-  if (tipo === "clt") {
-    return salario * 0.075; // Simula 7.5% de INSS, por exemplo
-  }
-  return 0;
+function formatarMoeda(input) {
+    let valor = input.value.replace(/\D/g, ""); // Remove o que não é número
+    valor = (valor / 100).toFixed(2) + "";
+    valor = valor.replace(".", ",");
+    valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    input.value = "R$ " + valor;
 }
 
 function salvarRenda() {
-  const salarioBruto = parseFloat(document.getElementById("salario").value) || 0;
-  const outras = parseFloat(document.getElementById("outras").value) || 0;
-  const descontoINSS = calcularINSS(salarioBruto);
-  const salarioLiquido = salarioBruto - descontoINSS;
-  const totalRenda = salarioLiquido + outras;
+    const limpar = (v) => parseFloat(v.replace("R$ ", "").replace(/\./g, "").replace(",", ".")) || 0;
 
-  localStorage.setItem("salario", salarioLiquido);
-  localStorage.setItem("outras", outras);
-  localStorage.setItem("totalRenda", totalRenda);
+    const salarioBruto = limpar(document.getElementById("salario").value);
+    const outras = limpar(document.getElementById("outras").value);
+    
+    const descontoINSS = calcularINSS(salarioBruto);
+    const salarioLiquido = salarioBruto - descontoINSS;
+    const totalRenda = salarioLiquido + outras;
 
-  window.location.href = "/ProjetoDevWeb/Gastos.html";
+    localStorage.setItem("salario", salarioLiquido);
+    localStorage.setItem("outras", outras);
+    localStorage.setItem("totalRenda", totalRenda);
+
+    window.location.href = "Gastos.html";
 }
