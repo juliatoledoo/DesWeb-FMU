@@ -1,29 +1,40 @@
-window.onload = function() {
-    const renda = parseFloat(localStorage.getItem("totalRenda")) || 0;
-    const gastos = parseFloat(localStorage.getItem("totalGastos")) || 0;
-    const saldo = renda - gastos;
+function salvarGastos() {
+    // 1. Lista de IDs das categorias (deve ser igual aos IDs no seu HTML)
+    const categorias = [
+        "Moradia", "Alimento", "Transporte", "Saude", 
+        "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"
+    ];
+    
+    let totalGastos = 0;
 
-    const formatar = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    // 2. Função interna para limpar a máscara "R$ " e converter para número
+    const limparValor = (valorFormatado) => {
+        if (!valorFormatado) return 0;
+        // Remove R$, pontos de milhar e troca a vírgula decimal por ponto
+        let limpo = valorFormatado.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
+        return parseFloat(limpo) || 0;
+    };
 
-    if(document.getElementById("res-renda")) document.getElementById("res-renda").innerText = formatar(renda);
-    if(document.getElementById("res-gastos")) document.getElementById("res-gastos").innerText = document.getElementById("res-gastos").innerText = formatar(gastos);
-    if(document.getElementById("res-saldo")) document.getElementById("res-saldo").innerText = formatar(saldo);
-
-    const campoSaldo = document.getElementById("res-saldo");
-    const msg = document.getElementById("mensagem-status");
-
-    if (campoSaldo && msg) {
-        if (saldo < 0) {
-            campoSaldo.style.color = "#ff4d4d";
-            msg.innerText = "Atenção! Você ultrapassou seu orçamento.";
-        } else {
-            campoSaldo.style.color = "#00ff88";
-            msg.innerText = "Parabéns! Suas finanças estão saudáveis.";
+    // 3. Percorre cada campo, limpa o valor e soma no total
+    categorias.forEach(id => {
+        const elemento = document.getElementById(id);
+        if (elemento) {
+            totalGastos += limparValor(elemento.value);
         }
-    }
+    });
+
+    // 4. Salva o resultado final no navegador
+    localStorage.setItem("totalGastos", totalGastos.toFixed(2));
+
+    // 5. Redireciona para o PlanoAcao.html (Verifique se as iniciais são MAIÚSCULAS)
+    window.location.href = "PlanoAcao.html";
 }
 
-function voltarInicio() {
-    localStorage.clear();
-    window.location.href = "index.html"; 
+// Função auxiliar para formatar a moeda enquanto o usuário digita
+function formatarMoeda(i) {
+    let v = i.value.replace(/\D/g, "");
+    v = (v / 100).toFixed(2).replace(".", ",");
+    v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+    v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+    i.value = "R$ " + v;
 }
