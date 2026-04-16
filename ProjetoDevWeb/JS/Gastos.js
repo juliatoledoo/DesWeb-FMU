@@ -1,21 +1,17 @@
 function salvarGastos() {
-    const categorias = [
-        "Moradia", "Alimento", "Transporte", "Saude", 
-        "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"
-    ];
-    
+    const campos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"];
     let totalGastos = 0;
 
-    const limparValor = (valorFormatado) => {
-        if (!valorFormatado) return 0;
-        let limpo = valorFormatado.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
+    const limpar = (v) => {
+        if (!v) return 0;
+        let limpo = v.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
         return parseFloat(limpo) || 0;
     };
 
-    categorias.forEach(id => {
+    campos.forEach(id => {
         const elemento = document.getElementById(id);
         if (elemento) {
-            totalGastos += limparValor(elemento.value);
+            totalGastos += limpar(elemento.value);
         }
     });
 
