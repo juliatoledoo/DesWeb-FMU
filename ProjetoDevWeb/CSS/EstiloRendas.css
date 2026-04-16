@@ -95,3 +95,24 @@ button {
 button:hover {
   background-color: #a183f3;
 }
+
+.container-gastos {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas */
+    gap: 20px;                      /* Espaço entre as caixas */
+    margin-top: 30px;
+    padding: 0 10%;
+}
+
+.item-gasto {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    color: orange;
+    font-weight: bold;
+}
+
+.item-gasto label {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
