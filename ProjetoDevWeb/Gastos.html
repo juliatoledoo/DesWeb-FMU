@@ -1,58 +1,62 @@
-<!-- Gastos.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gastos</title>
-  <link rel="stylesheet" href="CSS/EstiloRendas.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Simulador Financeiro - Gastos</title>
+    <link rel="stylesheet" href="CSS/EstiloRendas.css?v=10">
 </head>
 <body>
-<div class="centro">
-    <h1 class="titulo">GASTOS</h1>
-    <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
-    
-    <div class="grid-gastos">
-        <div class="campo">
-            <label>Moradia</label>
-            <input type="text" id="Moradia" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Alimentação</label>
-            <input type="text" id="Alimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Transporte</label>
-            <input type="text" id="Transporte" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Saúde</label>
-            <input type="text" id="Saude" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Assinaturas</label>
-            <input type="text" id="Assinaturas" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Lazer</label>
-            <input type="text" id="Lazer" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Educação</label>
-            <input type="text" id="Educacao" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Investimento</label>
-            <input type="text" id="Investimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-        <div class="campo">
-            <label>Outros</label>
-            <input type="text" id="Outros" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
-        </div>
-    </div>
+    <div class="centro">
+        <h1 class="titulo">GASTOS</h1>
+        <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
+        
+        <div class="grid-gastos">
+            <div class="item-gasto">
+                <label>Moradia (Aluguel, Luz...)</label>
+                <input type="text" id="Moradia" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
 
-    <button class="botao" onclick="salvarGastos()">CONTINUAR</button>
-</div>
-  <script src="/ProjetoDevWeb/JS/Gastos.js"></script>
-</body>
-</html>
+            <div class="item-gasto">
+                <label>Alimentação (Mercado, iFood...)</label>
+                <input type="text" id="Alimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Transporte (Combustível, Uber...)</label>
+                <input type="text" id="Transporte" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Saúde (Convênio, Farmácia...)</label>
+                <input type="text" id="Saude" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Assinaturas (Netflix, Spotify...)</label>
+                <input type="text" id="Assinaturas" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Lazer (Cinema, Viagens...)</label>
+                <input type="text" id="Lazer" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Educação (Faculdade, Cursos...)</label>
+                <input type="text" id="Educacao" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Investimento</label>
+                <input type="text" id="Investimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+
+            <div class="item-gasto">
+                <label>Outros</label>
+                <input type="text" id="Outros" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+            </div>
+        </div>
+
+        <button class="botao" onclick="salvarGastos()">CONTINUAR</button>
+    </div>
