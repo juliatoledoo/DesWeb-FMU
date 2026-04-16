@@ -22,6 +22,8 @@ body {
 
 .centro {
   padding: 40px 20px;
+  width: 100%;           
+  box-sizing: border-box;
 }
 
 h1 {
