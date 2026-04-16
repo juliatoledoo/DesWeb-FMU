@@ -1,24 +1,29 @@
-function salvarGastos() {
-    const campos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"];
-    let totalGastos = 0;
+window.onload = function() {
+    const renda = parseFloat(localStorage.getItem("totalRenda")) || 0;
+    const gastos = parseFloat(localStorage.getItem("totalGastos")) || 0;
+    const saldo = renda - gastos;
 
-    // Função para limpar o "R$ " e converter para número real
-    const limpar = (v) => {
-        if (!v) return 0;
-        let limpo = v.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
-        return parseFloat(limpo) || 0;
-    };
+    const formatar = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    campos.forEach(id => {
-        const elemento = document.getElementById(id);
-        if (elemento) {
-            totalGastos += limpar(elemento.value);
+    if(document.getElementById("res-renda")) document.getElementById("res-renda").innerText = formatar(renda);
+    if(document.getElementById("res-gastos")) document.getElementById("res-gastos").innerText = document.getElementById("res-gastos").innerText = formatar(gastos);
+    if(document.getElementById("res-saldo")) document.getElementById("res-saldo").innerText = formatar(saldo);
+
+    const campoSaldo = document.getElementById("res-saldo");
+    const msg = document.getElementById("mensagem-status");
+
+    if (campoSaldo && msg) {
+        if (saldo < 0) {
+            campoSaldo.style.color = "#ff4d4d";
+            msg.innerText = "Atenção! Você ultrapassou seu orçamento.";
+        } else {
+            campoSaldo.style.color = "#00ff88";
+            msg.innerText = "Parabéns! Suas finanças estão saudáveis.";
         }
-    });
+    }
+}
 
-    // IMPORTANTE: Salvar o TOTAL (número) e não o objeto
-    localStorage.setItem("totalGastos", totalGastos.toFixed(2));
-
-    // Redirecionamento correto
-    window.location.href = "PlanoAcao.html";
+function voltarInicio() {
+    localStorage.clear();
+    window.location.href = "index.html"; 
 }
