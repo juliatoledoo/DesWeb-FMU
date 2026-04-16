@@ -32,12 +32,13 @@ h1 {
 .frase {
   font-weight: bold;
   margin-bottom: 40px;
-  width: 90%;          
-  max-width: 900px;    
+  width: 100%;          
+  max-width: 1000px;     
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.6;
-  display: block;     
+  line-height: 1.5;
+  text-align: center;    
+  white-space: normal;   
 }
 
 .option {
