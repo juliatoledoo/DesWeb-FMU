@@ -7,10 +7,20 @@ function formatarMoeda(input) {
 }
 
 function salvarRenda() {
+    const inputSalario = document.getElementById("salario").value;
+    const inputOutras = document.getElementById("outras").value;
+
+    // VALIDAÇÃO: Se os campos estiverem vazios ou apenas com "R$ 0,00"
+    if (inputSalario === "" || inputSalario === "R$ 0,00") {
+        alert("Por favor, informe o valor do seu salário bruto.");
+        return; // O 'return' faz a função parar aqui e não avançar a página
+    }
+
+    // Se passou na validação, continua o código normal
     const limpar = (v) => parseFloat(v.replace("R$ ", "").replace(/\./g, "").replace(",", ".")) || 0;
 
-    const salarioBruto = limpar(document.getElementById("salario").value);
-    const outras = limpar(document.getElementById("outras").value);
+    const salarioBruto = limpar(inputSalario);
+    const outras = limpar(inputOutras);
     
     const descontoINSS = calcularINSS(salarioBruto);
     const salarioLiquido = salarioBruto - descontoINSS;
