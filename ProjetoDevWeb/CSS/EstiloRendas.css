@@ -32,11 +32,12 @@ h1 {
 .frase {
   font-weight: bold;
   margin-bottom: 40px;
-  max-width: 800px; /* Aumentei de 600px para 800px */
+  width: 90%;          
+  max-width: 900px;    
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.6; /* Aumentei um pouco o espaçamento entre linhas */
-  padding: 0 20px;  /* Adicionei um respiro nas laterais */
+  line-height: 1.6;
+  display: block;     
 }
 
 .option {
