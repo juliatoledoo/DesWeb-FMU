@@ -7,5 +7,5 @@ function salvarGastos() {
   });
 
   localStorage.setItem("gastos", JSON.stringify(gastos));
-  window.location.href = "/ProjetoDevWeb/PlanoAcao.html";
+  window.location.href = "/ProjetoDevWeb/Resultado.html";
 }
