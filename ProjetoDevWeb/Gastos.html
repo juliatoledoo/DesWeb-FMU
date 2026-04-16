@@ -8,23 +8,24 @@
   <link rel="stylesheet" href="CSS/EstiloRendas.css">
 </head>
 <body>
-  <div class="centro">
-    <h1>GASTOS</h1>
-    <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
+<div class="centro">
+    <h1 class="titulo">GASTOS</h1> <p class="frase">Insira os valores gastos nas categorias que você mais se encaixa.</p>
     <hr>
-    <div class="option">
-      <label>Moradia (Aluguel, Condomínio,Água, Luz): <input type="number" id="Moradia" class="caixa"></label><br>
-      <label>Alimentação (Mercado, Padaria, Ifood):<input type="number" id="Alimento" class="caixa"></label><br>
-      <label>Transporte (Ônibus, Uber, Prestação do  carro, Gasolina):<input type="number" id="Transporte" class="caixa"></label><br>
-      <label>Saúde (Convênio, Exames):<input type="number" id="Saude" class="caixa"></label><br>
-      <label>Assinaturas (Streaming):<input type="number" id="Assinaturas" class="caixa"></label><br>
-      <label>Lazer (Academia, Roupas, Jogos):<input type="number" id="Lazer" class="caixa"></label><br>
-      <label>Desenvolvimento Pessoal (Educação, Faculdade, Curso): <input type="number" id="Educacao" class="caixa"></label><br>
-      <label>Investimento (Poupança, Caixinha Nu, Criptomoedas):<input type="number" id="Investimento" class="caixa"></label><br>
-      <label>Outros (Pets, Família , Etc): <input type="number" id="Outros" class="caixa"></label>
-    </div>
-    <button onclick="salvarGastos()">CONTINUAR</button>
-  </div>
+
+    <div class="container-gastos"> <div class="item-gasto">
+            <label>Moradia (Aluguel, Luz...)</label>
+            <input type="text" id="Moradia" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+
+        <div class="item-gasto">
+            <label>Alimentação (Mercado, Ifood...)</label>
+            <input type="text" id="Alimento" class="caixa" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+        </div>
+
+        </div>
+
+    <button class="botao" onclick="salvarGastos()">CONTINUAR</button>
+</div>
   <script src="/ProjetoDevWeb/JS/Gastos.js"></script>
 </body>
 </html>
