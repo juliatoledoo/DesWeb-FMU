@@ -1,34 +1,39 @@
-window.onload = () => {
-  const gastos = JSON.parse(localStorage.getItem("gastos")) || {};
-  const renda = parseFloat(localStorage.getItem("salario") || 0) + parseFloat(localStorage.getItem("outras") || 0);
+window.onload = function() {
+    // Busca os totais que foram salvos nas páginas anteriores
+    const renda = parseFloat(localStorage.getItem("totalRenda")) || 0;
+    const gastos = parseFloat(localStorage.getItem("totalGastos")) || 0;
+    const saldo = renda - gastos;
 
-  const categorias = {
-    essenciais: ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Educacao", "Outros"],
-    lazer: ["Lazer"],
-    investimento: ["Investimento"]
-  };
+    // Função para formatar em Reais (Ex: R$ 1.500,00)
+    const formatar = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-  const totais = { essenciais: 0, lazer: 0, investimento: 0 };
+    // Coloca os valores nos IDs dos cards do HTML
+    if(document.getElementById("res-renda")) {
+        document.getElementById("res-renda").innerText = formatar(renda);
+    }
+    if(document.getElementById("res-gastos")) {
+        document.getElementById("res-gastos").innerText = formatar(gastos);
+    }
+    if(document.getElementById("res-saldo")) {
+        document.getElementById("res-saldo").innerText = formatar(saldo);
+    }
 
-  for (const [categoria, valor] of Object.entries(gastos)) {
-    const val = parseFloat(valor) || 0;
-    if (categorias.essenciais.includes(categoria)) totais.essenciais += val;
-    else if (categorias.lazer.includes(categoria)) totais.lazer += val;
-    else if (categorias.investimento.includes(categoria)) totais.investimento += val;
-  }
+    // Lógica visual do saldo (Verde ou Vermelho)
+    const campoSaldo = document.getElementById("res-saldo");
+    const msg = document.getElementById("mensagem-status");
 
-  const calc = v => renda > 0 ? ((v / renda) * 100).toFixed(2) + "%" : "0.00%";
+    if (campoSaldo && msg) {
+        if (saldo < 0) {
+            campoSaldo.style.color = "#ff4d4d"; // Vermelho
+            msg.innerText = "Atenção! Você ultrapassou seu orçamento.";
+        } else {
+            campoSaldo.style.color = "#00ff88"; // Verde
+            msg.innerText = "Parabéns! Suas finanças estão saudáveis.";
+        }
+    }
+}
 
-  document.getElementById("valor-essenciais").textContent = calc(totais.essenciais);
-  document.getElementById("valor-lazer").textContent = calc(totais.lazer);
-  document.getElementById("valor-investimento").textContent = calc(totais.investimento);
-
-  // Guarda os dados para outras páginas, se necessário
-  localStorage.setItem("essenciais", calc(totais.essenciais));
-  localStorage.setItem("lazer", calc(totais.lazer));
-  localStorage.setItem("investimento", calc(totais.investimento));
-};
-
-function irParaAnalise() {
-  window.location.href = "/ProjetoDevWeb/AnaliseGastos.html";
+function voltarInicio() {
+    localStorage.clear();
+    window.location.href = "index.html"; 
 }
