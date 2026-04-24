@@ -6,9 +6,9 @@
     <title>MoneyMap</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Efeito de descida suave */
+        /* Isso garante que a descida seja suave e profissional */
         html { scroll-behavior: smooth; }
-        .secondary-btn, .about-button { cursor: pointer; }
+        #simulate-btn, .secondary-btn, .about-button { cursor: pointer; }
     </style>
 </head>
 <body>
@@ -25,9 +25,9 @@
                     Simule agora!
                 </button>
                 
-                <a href="#sobre-nos" style="text-decoration: none;">
-                    <button class="secondary-btn">Saiba mais!</button>
-                </a>
+                <button class="secondary-btn" onclick="document.getElementById('sobre-nos').scrollIntoView({behavior: 'smooth'})">
+                    Saiba mais!
+                </button>
             </div>
             
             <div class="illustration">
