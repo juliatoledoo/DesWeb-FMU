@@ -47,16 +47,15 @@ function salvarRenda() {
     const salarioBruto = limpar(inputSalario);
     const outras = limpar(inputOutras);
     
-    console.log("Salário Bruto:", salarioBruto); // Verifique isso no F12
-
     const descontoINSS = calcularINSS(salarioBruto);
     const salarioLiquido = salarioBruto - descontoINSS;
     const totalRenda = salarioLiquido + outras;
 
+    // Persistência de Dados
     localStorage.setItem("salario", salarioLiquido.toFixed(2));
     localStorage.setItem("outras", outras.toFixed(2));
     localStorage.setItem("totalRenda", totalRenda.toFixed(2));
+    localStorage.setItem("descontoINSS", descontoINSS.toFixed(2)); // NOVO: Salva o INSS isolado
 
-    console.log("Sucesso! Redirecionando...");
     window.location.href = "Gastos.html";
 }
