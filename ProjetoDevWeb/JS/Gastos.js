@@ -14,16 +14,13 @@ function salvarGastos() {
         if (elemento) {
             let valor = limpar(elemento.value);
             totalGastos += valor;
-            
-            // NOVO: Se o ID for Investimento, salva separado
-            if (id === "Investimento") {
-                valorInvestimento = valor;
-            }
+            // Salva o investimento separado para o card
+            if (id === "Investimento") valorInvestimento = valor;
         }
     });
 
     localStorage.setItem("totalGastos", totalGastos.toFixed(2));
-    localStorage.setItem("totalInvestimento", valorInvestimento.toFixed(2)); // NOVO: Salva investimento isolado
+    localStorage.setItem("totalInvestimento", valorInvestimento.toFixed(2));
 
     window.location.href = "PlanoAcao.html";
 }
