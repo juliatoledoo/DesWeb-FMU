@@ -6,8 +6,9 @@
     <title>MoneyMap</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Isso garante que a descida seja suave */
+        /* Efeito de descida suave */
         html { scroll-behavior: smooth; }
+        .secondary-btn, .about-button { cursor: pointer; }
     </style>
 </head>
 <body>
@@ -19,10 +20,13 @@
             <div class="text">
                 <h1>Simule suas finanças em poucos cliques</h1>
                 <p>Preencha alguns dados e veja uma simulação completa do seu cenário financeiro.</p>
-                <button id="simulate-btn" onclick="window.location.href='perfil.html'">Simule agora!</button>
                 
-                <a href="#sobre-nos" class="secondary-btn" style="text-decoration: none; display: inline-block; text-align: center;">
-                    Saiba mais!
+                <button id="simulate-btn" onclick="window.location.href='ProjetoDevWeb/Rendas.html'">
+                    Simule agora!
+                </button>
+                
+                <a href="#sobre-nos" style="text-decoration: none;">
+                    <button class="secondary-btn">Saiba mais!</button>
                 </a>
             </div>
             
@@ -40,7 +44,10 @@
         <div class="about-text">
             <h1>Sobre</h1>
             <p>Este simulador tem como objetivo ajudá-lo a controlar suas finanças pessoais, mostrar como está distribuindo seus gastos e fornecer sugestões de ajustes para uma gestão financeira mais equilibrada.</p>
-            <button class="about-button" onclick="window.location.href='perfil.html'">Simule agora!</button>
+            
+            <button class="about-button" onclick="window.location.href='ProjetoDevWeb/Rendas.html'">
+                Simule agora!
+            </button>
         </div>
     </section>
 
