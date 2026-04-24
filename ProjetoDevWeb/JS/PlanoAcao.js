@@ -32,7 +32,7 @@ window.onload = function() {
 };
 
 function voltarInicio() {
-    console.log("Limpando dados e voltando para o início...");
+    console.log("Saindo da pasta ProjetoDevWeb e voltando para a raiz...");
     localStorage.clear();
-    window.location.href = "./index.html"; 
+    window.location.href = "../index.html"; 
 }
