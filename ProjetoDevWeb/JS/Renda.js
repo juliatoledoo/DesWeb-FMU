@@ -1,11 +1,12 @@
 function calcularINSS(salario) {
     const tipo = localStorage.getItem("tipoContrato");
     
-    // Só calcula se for CLT
+    // Se não for CLT ou se for estágio, o desconto é ZERO
     if (tipo !== "clt") return 0;
 
     let inss = 0;
 
+    // Tabela progressiva do INSS 2026
     if (salario <= 1412.00) {
         inss = salario * 0.075;
     } else if (salario <= 2666.68) {
@@ -38,6 +39,7 @@ function salvarRenda() {
         return;
     }
 
+    // Função interna para limpar a formatação de moeda e converter para número
     const limpar = (v) => {
         if (!v) return 0;
         let limpo = v.replace("R$ ", "").replace(/\./g, "").replace(",", ".");
@@ -45,17 +47,20 @@ function salvarRenda() {
     };
 
     const salarioBruto = limpar(inputSalario);
-    const outras = limpar(inputOutras);
+    const outrasRendas = limpar(inputOutras);
     
-    const descontoINSS = calcularINSS(salarioBruto);
-    const salarioLiquido = salarioBruto - descontoINSS;
-    const totalRenda = salarioLiquido + outras;
+    // Cálculo do Desconto (apenas sobre o salário bruto)
+    const valorDescontoINSS = calcularINSS(salarioBruto);
+    
+    // Renda Líquida = (Bruto - Desconto) + Outras Rendas
+    const rendaLiquidaFinal = (salarioBruto - valorDescontoINSS) + outrasRendas;
 
-    // Persistência de Dados
-    localStorage.setItem("salario", salarioLiquido.toFixed(2));
-    localStorage.setItem("outras", outras.toFixed(2));
-    localStorage.setItem("totalRenda", totalRenda.toFixed(2));
-    localStorage.setItem("descontoINSS", descontoINSS.toFixed(2)); // NOVO: Salva o INSS isolado
+    // PERSISTÊNCIA: Guardamos os valores de forma isolada para o Dashboard
+    localStorage.setItem("salarioBruto", salarioBruto.toFixed(2));
+    localStorage.setItem("descontoINSS", valorDescontoINSS.toFixed(2));
+    localStorage.setItem("totalRenda", rendaLiquidaFinal.toFixed(2));
+    localStorage.setItem("outrasRendas", outrasRendas.toFixed(2));
 
+    console.log("Dados salvos com sucesso!");
     window.location.href = "Gastos.html";
 }
