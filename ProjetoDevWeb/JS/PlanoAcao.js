@@ -32,7 +32,7 @@ window.onload = function() {
 };
 
 function voltarInicio() {
-    console.log("Reiniciando simulação...");
+    console.log("Limpando dados e voltando para o início...");
     localStorage.clear();
-    window.location.replace("index.html"); 
+    window.location.href = "./index.html"; 
 }
