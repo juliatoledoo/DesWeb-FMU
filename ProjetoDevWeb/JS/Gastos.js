@@ -1,5 +1,6 @@
 function salvarGastos() {
-    const campos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"];
+    // Lista de campos que são considerados GASTOS (tirei o Investimento desta soma)
+    const camposGastos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Outros"];
     let totalGastos = 0;
     let valorInvestimento = 0;
 
@@ -9,16 +10,21 @@ function salvarGastos() {
         return parseFloat(limpo) || 0;
     };
 
-    campos.forEach(id => {
+    // 1. Soma apenas o que é GASTO real
+    camposGastos.forEach(id => {
         const elemento = document.getElementById(id);
         if (elemento) {
-            let valor = limpar(elemento.value);
-            totalGastos += valor;
-            // Salva o investimento separado para o card
-            if (id === "Investimento") valorInvestimento = valor;
+            totalGastos += limpar(elemento.value);
         }
     });
 
+    // 2. Pega o valor do Investimento separadamente para o card dele
+    const campoInvestimento = document.getElementById("Investimento");
+    if (campoInvestimento) {
+        valorInvestimento = limpar(campoInvestimento.value);
+    }
+
+    // PERSISTÊNCIA: Agora o totalGastos não inclui o investimento
     localStorage.setItem("totalGastos", totalGastos.toFixed(2));
     localStorage.setItem("totalInvestimento", valorInvestimento.toFixed(2));
 
