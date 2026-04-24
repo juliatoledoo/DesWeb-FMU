@@ -1,6 +1,7 @@
 function salvarGastos() {
     const campos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"];
     let totalGastos = 0;
+    let valorInvestimento = 0;
 
     const limpar = (v) => {
         if (!v) return 0;
@@ -11,11 +12,18 @@ function salvarGastos() {
     campos.forEach(id => {
         const elemento = document.getElementById(id);
         if (elemento) {
-            totalGastos += limpar(elemento.value);
+            let valor = limpar(elemento.value);
+            totalGastos += valor;
+            
+            // NOVO: Se o ID for Investimento, salva separado
+            if (id === "Investimento") {
+                valorInvestimento = valor;
+            }
         }
     });
 
     localStorage.setItem("totalGastos", totalGastos.toFixed(2));
+    localStorage.setItem("totalInvestimento", valorInvestimento.toFixed(2)); // NOVO: Salva investimento isolado
 
     window.location.href = "PlanoAcao.html";
 }
