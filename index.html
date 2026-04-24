@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoneyMap</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Isso garante que a descida seja suave */
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
 <body>
     
@@ -15,11 +19,11 @@
             <div class="text">
                 <h1>Simule suas finanças em poucos cliques</h1>
                 <p>Preencha alguns dados e veja uma simulação completa do seu cenário financeiro.</p>
-                <button id="simulate-btn">Simule agora!</button>
+                <button id="simulate-btn" onclick="window.location.href='perfil.html'">Simule agora!</button>
                 
-                <button class="secondary-btn" onclick="document.getElementById('sobre-nos').scrollIntoView({behavior: 'smooth'})">
+                <a href="#sobre-nos" class="secondary-btn" style="text-decoration: none; display: inline-block; text-align: center;">
                     Saiba mais!
-                </button>
+                </a>
             </div>
             
             <div class="illustration">
