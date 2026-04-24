@@ -6,8 +6,14 @@
     <title>MoneyMap</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        html { scroll-behavior: smooth; }
-        #simulate-btn, .secondary-btn, .about-button { cursor: pointer; }
+        /* Suaviza o deslize da página ao clicar em Saiba Mais */
+        html { 
+            scroll-behavior: smooth; 
+        }
+        /* Garante que o rato mude para o ícone de clique nos botões */
+        #simulate-btn, .secondary-btn, .about-button { 
+            cursor: pointer; 
+        }
     </style>
 </head>
 <body>
@@ -44,8 +50,8 @@
             <h1>Sobre</h1>
             <p>Este simulador tem como objetivo ajudá-lo a controlar suas finanças pessoais, mostrar como está distribuindo seus gastos e fornecer sugestões de ajustes para uma gestão financeira mais equilibrada.</p>
             
-            <button id="simulate-btn" onclick="window.location.href='ProjetoDevWeb/Cadastro.html'">
-                    Simule agora!
+            <button class="about-button" onclick="window.location.href='ProjetoDevWeb/Cadastro.html'">
+                Simule agora!
             </button>
         </div>
     </section>
