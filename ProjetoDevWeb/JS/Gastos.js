@@ -1,7 +1,6 @@
 function salvarGastos() {
-    // Lista de campos que são considerados GASTOS (tirei o Investimento desta soma)
-    const camposGastos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Outros"];
-    let totalGastos = 0;
+    const campos = ["Moradia", "Alimento", "Transporte", "Saude", "Assinaturas", "Lazer", "Educacao", "Investimento", "Outros"];
+    let somaTudo = 0;
     let valorInvestimento = 0;
 
     const limpar = (v) => {
@@ -10,22 +9,22 @@ function salvarGastos() {
         return parseFloat(limpo) || 0;
     };
 
-    // 1. Soma apenas o que é GASTO real
-    camposGastos.forEach(id => {
+    campos.forEach(id => {
         const elemento = document.getElementById(id);
         if (elemento) {
-            totalGastos += limpar(elemento.value);
+            let valor = limpar(elemento.value);
+            somaTudo += valor; // Soma absolutamente tudo primeiro
+            
+            if (id === "Investimento") {
+                valorInvestimento = valor;
+            }
         }
     });
 
-    // 2. Pega o valor do Investimento separadamente para o card dele
-    const campoInvestimento = document.getElementById("Investimento");
-    if (campoInvestimento) {
-        valorInvestimento = limpar(campoInvestimento.value);
-    }
+    // A MÁGICA: O total de gastos é a soma de tudo MENOS o investimento
+    let gastosReais = somaTudo - valorInvestimento;
 
-    // PERSISTÊNCIA: Agora o totalGastos não inclui o investimento
-    localStorage.setItem("totalGastos", totalGastos.toFixed(2));
+    localStorage.setItem("totalGastos", gastosReais.toFixed(2));
     localStorage.setItem("totalInvestimento", valorInvestimento.toFixed(2));
 
     window.location.href = "PlanoAcao.html";
