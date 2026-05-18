@@ -72,28 +72,57 @@
       outline: none;
     }
 
-    .filter-select {
+    .filter-container {
+      position: relative;
+    }
+
+    .filter-btn {
+      height: 100%;
       padding: 0.8rem 1.5rem;
       border: none;
       border-radius: 10px;
       background-color: #eee;
       color: #333;
       font-weight: 600;
-      font-size: 1rem;
       cursor: pointer;
-      outline: none;
+      display: flex;
+      align-items: center;   
+      justify-content: center;
       transition: background-color 0.2s;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M1 3l4 4 4-4' stroke='%23333' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 35px;
     }
 
-    .filter-select:hover {
+    .filter-btn:hover {
       background-color: #ddd;
+    }
+
+    .filter-menu {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 105;
+      min-width: 160px;
+      overflow: hidden;
+    }
+
+    .filter-menu button {
+      display: block;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      background: none;
+      border: none;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .filter-menu button:hover {
+      background-color: #eee;
     }
 
     table {
@@ -131,7 +160,7 @@
       cursor: pointer;
       font-size: 1.5rem;
       position: relative;
-      padding: 5px 10px; 
+      padding: 5px 10px;
       display: inline-block;
     }
 
@@ -175,9 +204,10 @@
   </div>
 
   <div class="search-bar">
-    <select class="filter-select" id="date-filter-select">
-      <option value="todas">Filtro ⌄</option>
-    </select>
+    <div class="filter-container">
+      <button class="filter-btn" id="filter-main-btn">Filtro ⌄</button>
+      <div class="filter-menu" id="filter-dropdown"></div>
+    </div>
     <input type="text" id="search-input" placeholder="Procure a análise que você fez" />
   </div>
 
@@ -186,9 +216,10 @@
       <tr>
         <th>Data</th>
         <th>Hora</th>
-        <th>Renda</th>
+        <th>Contrato</th>
         <th>Valor Recebido</th>
-        <th>Valor Final</th>
+        <th>Gastos</th>
+        <th>Sobra</th>
         <th></th>
       </tr>
     </thead>
@@ -228,13 +259,16 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const dateSelect = document.getElementById('date-filter-select');
+      let dataFiltroAtual = 'todas';
+
+      const filterBtn = document.getElementById('filter-main-btn');
+      const filterMenu = document.getElementById('filter-dropdown');
       const searchInput = document.getElementById('search-input');
 
       atualizarOpcoesDeFiltro();
+      configurarEventosTabela();
 
       function atualizarOpcoesDeFiltro() {
-        const valorSelecionadoAntes = dateSelect.value || 'todas';
         const linhas = document.querySelectorAll('#table-body tr');
         const datasEncontradas = new Set();
 
@@ -246,25 +280,33 @@
           }
         });
 
-        let optionsHTML = `<option value="todas">Filtro ⌄</option>`;
+        let menuHTML = `<button data-filter="todas">Filtro ⌄</button>`;
         datasEncontradas.forEach(data => {
-          optionsHTML += `<option value="${data}">${data}</option>`;
+          menuHTML += `<button data-filter="${data}">${data}</button>`;
         });
 
-        dateSelect.innerHTML = optionsHTML;
-        
-        if (datasEncontradas.has(valorSelecionadoAntes)) {
-          dateSelect.value = valorSelecionadoAntes;
-        } else {
-          dateSelect.value = 'todas';
-        }
+        filterMenu.innerHTML = menuHTML;
+
+        filterMenu.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dataFiltroAtual = this.getAttribute('data-filter');
+            filterBtn.innerHTML = dataFiltroAtual === 'todas' ? `Filtro ⌄` : `Data: ${this.innerText} ⌄`;
+            filterMenu.style.display = 'none';
+            filtrarTabela();
+          });
+        });
       }
 
-      dateSelect.addEventListener('change', filtrarTabela);
+      filterBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.querySelectorAll('.crud-menu').forEach(m => m.style.display = 'none');
+        filterMenu.style.display = (filterMenu.style.display === 'block') ? 'none' : 'block';
+      });
+
       searchInput.addEventListener('input', filtrarTabela);
 
       function filtrarTabela() {
-        const filtroAtual = dateSelect.value;
         const textoBusca = searchInput.value.toLowerCase();
         const linhas = document.querySelectorAll('#table-body tr');
 
@@ -274,7 +316,7 @@
           const textoDaLinha = ReadTextoLinhaCompleta(linha);
           const colunaData = linha.querySelectorAll('td')[0].innerText.trim();
 
-          const bateData = (filtroAtual === 'todas' || colunaData === filtroAtual);
+          const bateData = (dataFiltroAtual === 'todas' || colunaData === dataFiltroAtual);
           const bateTexto = textoDaLinha.includes(textoBusca);
 
           if (bateData && bateTexto) {
@@ -293,55 +335,60 @@
         return texto.toLowerCase();
       }
 
-      document.addEventListener('click', function(e) {
+      function configurarEventosTabela() {
 
-        const botaoTresPontos = e.target.closest('.options');
+        document.querySelectorAll('.options').forEach(option => {
+          option.onclick = function(e) {
+            e.stopPropagation();
+            filterMenu.style.display = 'none'; 
+            
+            const menu = this.querySelector('.crud-menu');
+            document.querySelectorAll('.crud-menu').forEach(m => {
+              if (m !== menu) m.style.display = 'none';
+            });
 
-        if (botaoTresPontos) {
-          e.stopPropagation();
-          const menu = botaoTresPontos.querySelector('.crud-menu');
-          
-          document.querySelectorAll('.crud-menu').forEach(m => {
-            if (m !== menu) m.style.display = 'none';
-          });
-
-          menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-          return;
-        }
-
-        if (e.target.classList.contains('delete-btn')) {
-          e.stopPropagation();
-          const row = e.target.closest('tr');
-          row.remove();
-          atualizarOpcoesDeFiltro();
-          filtrarTabela();
-          return;
-        }
-
-        if (e.target.classList.contains('edit-btn')) {
-          e.stopPropagation();
-          const row = e.target.closest('tr');
-          const cells = row.querySelectorAll('td');
-
-          const tipoRenda = cells[2].innerText.trim(); 
-          const valorRecebido = cells[3].innerText.replace('R$', '').replace(/\./g, '').trim(); 
-          
-          const valorFinalTexto = cells[4].innerText;
-          const matchInvestimento = valorFinalTexto.match(/\d+(\.\d+)?/);
-          const valorInvestimento = matchInvestimento ? matchInvestimento[0] : "";
-
-          const dadosEdicao = {
-            renda: tipoRenda,
-            valor: valorRecebido,
-            investimento: valorInvestimento
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
           };
+        });
 
-          localStorage.setItem('dadosSimulacaoEdicao', JSON.stringify(dadosEdicao));
-          window.location.href = 'ProjetoDevWeb/Rendas.html';
-          return;
-        }
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.onclick = function(e) {
+            e.stopPropagation();
+            const row = this.closest('tr');
+            row.remove();
+            atualizarOpcoesDeFiltro();
+            filtrarTabela();
+          };
+        });
 
-        document.querySelectorAll('.crud-menu').forEach(menu => menu.style.display = 'none');
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.onclick = function(e) {
+            e.stopPropagation();
+            const row = this.closest('tr');
+            const cells = row.querySelectorAll('td');
+
+            const tipoRenda = cells[2].innerText.trim(); 
+            const valorRecebido = cells[3].innerText.replace('R$', '').replace(/\./g, '').trim(); 
+            
+            const valorFinalTexto = cells[4].innerText;
+            const matchInvestimento = valorFinalTexto.match(/\d+(\.\d+)?/);
+            const valorInvestimento = matchInvestimento ? matchInvestimento[0] : "";
+
+            const dadosEdicao = {
+              renda: tipoRenda,
+              valor: valorRecebido,
+              investimento: valorInvestimento
+            };
+
+            localStorage.setItem('dadosSimulacaoEdicao', JSON.stringify(dadosEdicao));
+            window.location.href = 'ProjetoDevWeb/Rendas.html';
+          };
+        });
+      }
+
+      document.addEventListener('click', function() {
+        document.querySelectorAll('.crud-menu').forEach(m => m.style.display = 'none');
+        filterMenu.style.display = 'none';
       });
     });
   </script>
