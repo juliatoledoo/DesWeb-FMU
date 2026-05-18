@@ -83,13 +83,13 @@
       cursor: pointer;
       outline: none;
       transition: background-color 0.2s;
-      -webkit-appearance: none; 
+      -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M1 3l4 4 4-4' stroke='%23333' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
       background-repeat: no-repeat;
       background-position: right 12px center;
-      padding-right: 35px; 
+      padding-right: 35px;
     }
 
     .filter-select:hover {
@@ -237,7 +237,7 @@
         const datasEncontradas = new Set();
 
         linhas.forEach(linha => {
-          const primeiraCelula = linha.querySelector('td');
+          const primeiraCelula = lineQueryFirstCell(linha);
           if (primeiraCelula) {
             const dataTexto = primeiraCelula.innerText.trim();
             if (dataTexto) datasEncontradas.add(dataTexto);
@@ -258,6 +258,10 @@
         }
       }
 
+      function lineQueryFirstCell(linha) {
+        return linha.querySelector('td');
+      }
+
       dateSelect.addEventListener('change', filtrarTabela);
       searchInput.addEventListener('input', filtrarTabela);
 
@@ -267,78 +271,4 @@
         const linhas = document.querySelectorAll('#table-body tr');
 
         linhas.forEach(linha => {
-          if (!linha.querySelector('td')) return; 
-
-          const textoDaLinha = ReadTextoLinhaCompleta(linha);
-          const colunaData = linha.querySelectorAll('td')[0].innerText.trim();
-
-          const bateData = (filtroAtual === 'todas' || colunaData === filtroAtual);
-          const bateTexto = textoDaLinha.includes(textoBusca);
-
-          if (bateData && bateTexto) {
-            linha.style.display = '';
-          } else {
-            linha.style.display = 'none';
-          }
-        });
-      }
-
-      function ReadTextoLinhaCompleta(linha) {
-        let texto = '';
-        const celulas = Array.from(linha.querySelectorAll('td'));
-        const celulasValidas = celulas.slice(0, celulas.length - 1);
-        celulasValidas.forEach(celula => texto += celula.innerText + ' ');
-        return texto.toLowerCase();
-      }
-
-      configurarEventosCrud();
-
-      function configurarEventosCrud() {
-        document.querySelectorAll('.options').forEach(option => {
-          option.onclick = function(e) {
-            e.stopPropagation();
-            document.querySelectorAll('.crud-menu').forEach(menu => {
-              if(menu !== option.querySelector('.crud-menu')) {
-                menu.style.display = 'none';
-              }
-            });
-            const menu = option.querySelector('.crud-menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-          };
-        });
-      }
-
-      document.addEventListener('click', () => {
-        document.querySelectorAll('.crud-menu').forEach(menu => menu.style.display = 'none');
-      });
-
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.onclick = function(e) {
-          e.stopPropagation();
-          const row = btn.closest('tr');
-          row.remove();
-          atualizarOpcoesDeFiltro();
-          filtrarTabela();
-        };
-      });
-
-      document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.onclick = function(e) {
-          e.stopPropagation();
-          const row = btn.closest('tr');
-          const cells = row.querySelectorAll('td');
-          for(let i = 0; i < cells.length - 1; i++) {
-            const current = cells[i].innerText;
-            const input = prompt(`Editar valor:`, current);
-            if(input !== null && input.trim() !== '') {
-              cells[i].innerText = input;
-            }
-          }
-          atualizarOpcoesDeFiltro();
-          filtrarTabela();
-        };
-      });
-    });
-  </script>
-</body>
-</html>
+          if (!linha.querySelector('td')) return;
