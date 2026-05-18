@@ -8,7 +8,6 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #1E0034;
     color: #fff;
-    min-height: 100vh; 
 }
 
 header {
@@ -84,6 +83,7 @@ header {
     justify-content: space-around;
     align-items: center;
     padding: 50px 150px;
+    background-color: #1E0034;
 }
 
 .hero2 {
