@@ -83,17 +83,35 @@ header {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap; 
-    gap: 30px;      
-    
-    padding: 120px 40px; 
+    padding: 100px 150px;
+    min-height: 85vh; 
     
     background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('img/about.png');
     background-size: cover;
     background-position: right center;
     background-repeat: no-repeat;
-    
     width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .hero {
+        flex-direction: column;   
+        justify-content: center;
+        text-align: center;       
+        padding: 60px 20px;      
+        min-height: auto;         
+        background-position: center center; 
+    }
+    
+    .text {
+        max-width: 100%;          
+        margin-bottom: 20px;
+    }
+    
+    .secondary-btn {
+        margin-left: 0;
+        margin-top: 10px;         
+    }
 }
 
 .hero2 {
