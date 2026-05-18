@@ -27,5 +27,43 @@
       
       <button class="botao" onclick="salvarRenda()">CONTINUAR</button>
     </div>
+    
     <script src="JS/Renda.js?v=5"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        const dadosSalvos = localStorage.getItem('dadosSimulacaoEdicao');
+
+        if (dadosSalvos) {
+          const dados = JSON.parse(dadosSalvos);
+
+          const inputSalario = document.getElementById('salario');
+          const inputOutras = document.getElementById('outras');
+
+          if (dados.renda.toLowerCase() === 'clt' || dados.renda.toLowerCase() === 'contrato') {
+            if (inputSalario) {
+
+              inputSalario.value = formatarValorParaInput(dados.valor);
+            }
+          } else {
+
+            if (inputOutras) {
+              inputOutras.value = formatarValorParaInput(dados.valor);
+            }
+          }
+
+          localStorage.removeItem('dadosSimulacaoEdicao');
+        }
+      });
+
+      function formatarValorParaInput(valorStr) {
+        if (!valorStr) return "R$ 0,00";
+        let numero = parseFloat(valorStr);
+        if (isNaN(numero)) return valorStr;
+        
+        return numero.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+    </script>
   </body>
+</html>
