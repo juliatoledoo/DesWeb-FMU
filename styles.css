@@ -1,21 +1,22 @@
 * {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-font-family: 'Arial', sans-serif;
-background-color: #1E0034;
-color: #fff;
+    font-family: 'Arial', sans-serif;
+    background-color: #1E0034;
+    color: #fff;
+    min-height: 100vh;
 }
 
 header {
-background-color: #1E0034;
-padding: 20px 0;
-display: flex;
-flex-direction: column;
-gap: 10px;
+    background-color: #1E0034;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .container {
@@ -27,66 +28,73 @@ gap: 10px;
 
 /* Logo */
 .logo {
-font-size: 35px;
-font-weight: bold;
+    font-size: 35px;
+    font-weight: bold;
 }
 
 /* Agrupamento logo + nav */
 .left-group {
-display: flex;
-align-items: center;
-gap: 20px; /* Aqui controla a distância entre logo e menu */
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .nav-center ul {
-list-style: none;
-display: flex;
-gap: 20px;
-}
-  
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}  
 
 .nav-center a {
-color: white;
-text-decoration: none;
-font-weight: 500;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 .nav-center a:hover {
-color: #00ffff;
+    color: #00ffff;
 }
 
 /* Direita */
 .nav-right {
-display: flex;
-gap: 20px;
-align-items: center;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .nav-right a {
-color: white;
-text-decoration: none;
-font-weight: 500;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 .cta-btn {
-background-color: #1EA7FD;
-color: white;
-padding: 10px 20px;
-border-radius: 5px;
-font-weight: bold;
-text-decoration: none;
-transition: background-color 0.3s ease;
+    background-color: #1EA7FD;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
 .cta-btn:hover {
-background-color: #0e8bd1;
+    background-color: #0e8bd1;
 }
 
+/* Primeira Seção Ajustada com a Imagem de Fundo */
 .hero {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 50px 150px;
+    padding: 100px 150px;
+    min-height: 85vh; 
+    
+    /* Degradê escuro na esquerda para dar leitura ao texto + Imagem cobrindo a tela na direita */
+    background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('img/about.png');
+    background-size: cover;
+    background-position: right center;
+    background-repeat: no-repeat;
 }
 
 .hero2 {
@@ -166,12 +174,12 @@ footer {
     padding: 80px;
     text-align: center;
 }
+
 .icones a{
     color: white;
     text-decoration: none;
     font-weight: 500;
 }
-
 
 .footer-container {
     display: flex;
