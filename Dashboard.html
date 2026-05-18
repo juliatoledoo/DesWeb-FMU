@@ -60,6 +60,8 @@
       display: flex;
       gap: 1rem;
       margin-bottom: 2rem;
+      align-items: stretch;
+      position: relative;
     }
 
     .search-bar input {
@@ -71,14 +73,57 @@
       outline: none;
     }
 
+    .filter-container {
+      position: relative;
+    }
+
     .filter-btn {
-      padding: 0.8rem 1rem;
+      height: 100%;
+      padding: 0.8rem 1.5rem;
       border: none;
       border-radius: 10px;
       background-color: #eee;
-      color: #444;
-      font-weight: 500;
+      color: #333;
+      font-weight: 600;
       cursor: pointer;
+      display: flex;
+      align-items: center;   
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .filter-btn:hover {
+      background-color: #ddd;
+    }
+
+    .filter-menu {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 105;
+      min-width: 160px;
+      overflow: hidden;
+    }
+
+    .filter-menu button {
+      display: block;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      background: none;
+      border: none;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .filter-menu button:hover {
+      background-color: #eee;
     }
 
     table {
@@ -158,8 +203,14 @@
   </div>
 
   <div class="search-bar">
-    <button class="filter-btn">Filtro ⌄</button>
-    <input type="text" placeholder="Procure a análise que você fez" />
+    <div class="filter-container">
+      <button class="filter-btn" id="filter-main-btn">Filtro ⌄</button>
+      <div class="filter-menu" id="filter-dropdown">
+        <button data-filter="todas">Todas as datas</button>
+        <button data-filter="15/01/25">15/01/25</button>
+        <button data-filter="16/01/25">16/01/25</button> </div>
+    </div>
+    <input type="text" id="search-input" placeholder="Procure a análise que você fez" />
   </div>
 
   <table>
@@ -167,7 +218,7 @@
       <tr>
         <th>Data</th>
         <th>Hora</th>
-        <th>Renda</th>
+        <th>Contrato</th>
         <th>Valor Recebido</th>
         <th>Valor Final</th>
         <th></th>
@@ -208,10 +259,63 @@
   </table>
 
   <script>
-    
+    let dataFiltroAtual = 'todas';
+
+    const filterBtn = document.getElementById('filter-main-btn');
+    const filterMenu = document.getElementById('filter-dropdown');
+
+    filterBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.querySelectorAll('.crud-menu').forEach(menu => menu.style.display = 'none');
+      filterMenu.style.display = filterMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.querySelectorAll('.filter-menu button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        dataFiltroAtual = this.getAttribute('data-filter');
+        filterBtn.innerHTML = `Data: ${this.innerText} ⌄`;
+        filterMenu.style.display = 'none';
+        filtrarTabela();
+      });
+    });
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', filtrarTabela);
+
+    function filtrarTabela() {
+      const textoBusca = searchInput.value.toLowerCase();
+      const linhas = document.querySelectorAll('#table-body tr');
+
+      linhas.forEach(linha => {
+        if (!linha.querySelector('td')) return; 
+
+        const textoDaLinha = ReadTextoLinhaCompleta(linha);
+        const colunaData = linha.querySelectorAll('td')[0].innerText.trim();
+
+        const bateData = (dataFiltroAtual === 'todas' || colunaData === dataFiltroAtual);
+        const bateTexto = textoDaLinha.includes(textoBusca);
+
+        if (bateData && bateTexto) {
+          linha.style.display = '';
+        } else {
+          linha.style.display = 'none';
+        }
+      });
+    }
+
+    function ReadTextoLinhaCompleta(linha) {
+      let texto = '';
+      const celulas = linha.querySelectorAll('td');
+      for(let i = 0; i < celulas.length - 1; i++) {
+        texto += celulas[i].innerText + ' ';
+      }
+      return texto.toLowerCase();
+    }
+
     document.querySelectorAll('.options').forEach(option => {
       option.addEventListener('click', function(e) {
         e.stopPropagation();
+        filterMenu.style.display = 'none';
         document.querySelectorAll('.crud-menu').forEach(menu => {
           if(menu !== option.querySelector('.crud-menu')) {
             menu.style.display = 'none';
@@ -223,9 +327,8 @@
     });
 
     document.addEventListener('click', () => {
-      document.querySelectorAll('.crud-menu').forEach(menu => {
-        menu.style.display = 'none';
-      });
+      document.querySelectorAll('.crud-menu').forEach(menu => menu.style.display = 'none');
+      filterMenu.style.display = 'none';
     });
 
     document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -241,13 +344,14 @@
         e.stopPropagation();
         const row = btn.closest('tr');
         const cells = row.querySelectorAll('td');
-        for(let i = 0; i < cells.length - 1; i++) { 
+        for(let i = 0; i < cells.length - 1; i++) {
           const current = cells[i].innerText;
           const input = prompt(`Editar valor:`, current);
           if(input !== null && input.trim() !== '') {
             cells[i].innerText = input;
           }
         }
+        filtrarTabela();
       });
     });
   </script>
