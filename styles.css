@@ -26,13 +26,11 @@ header {
     padding: 0 120px;
 }
 
-/* Logo */
 .logo {
     font-size: 35px;
     font-weight: bold;
 }
 
-/* Agrupamento logo + nav */
 .left-group {
     display: flex;
     align-items: center;
@@ -55,7 +53,6 @@ header {
     color: #00ffff;
 }
 
-/* Direita */
 .nav-right {
     display: flex;
     gap: 20px;
@@ -82,7 +79,6 @@ header {
     background-color: #0e8bd1;
 }
 
-/* Primeira Seção Ajustada com a Imagem de Fundo */
 .hero {
     display: flex;
     justify-content: space-around;
@@ -90,8 +86,7 @@ header {
     padding: 100px 150px;
     min-height: 85vh; 
     
-    /* Degradê escuro na esquerda para dar leitura ao texto + Imagem cobrindo a tela na direita */
-    background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('img/about.png');
+    background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('../img/about.png');
     background-size: cover;
     background-position: right center;
     background-repeat: no-repeat;
