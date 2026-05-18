@@ -205,10 +205,7 @@
   <div class="search-bar">
     <div class="filter-container">
       <button class="filter-btn" id="filter-main-btn">Filtro ⌄</button>
-      <div class="filter-menu" id="filter-dropdown">
-        <button data-filter="todas">Todas as datas</button>
-        <button data-filter="15/01/25">15/01/25</button>
-        <button data-filter="16/01/25">16/01/25</button> </div>
+      <div class="filter-menu" id="filter-dropdown"></div>
     </div>
     <input type="text" id="search-input" placeholder="Procure a análise que você fez" />
   </div>
@@ -218,7 +215,7 @@
       <tr>
         <th>Data</th>
         <th>Hora</th>
-        <th>Contrato</th>
+        <th>Renda</th>
         <th>Valor Recebido</th>
         <th>Valor Final</th>
         <th></th>
@@ -263,6 +260,38 @@
 
     const filterBtn = document.getElementById('filter-main-btn');
     const filterMenu = document.getElementById('filter-dropdown');
+    const searchInput = document.getElementById('search-input');
+
+    atualizarOpcoesDeFiltro();
+
+    function atualizarOpcoesDeFiltro() {
+      const linhas = document.querySelectorAll('#table-body tr');
+      const datasEncontradas = new Set(); 
+
+      linhas.forEach(linha => {
+        const primeiraCelula = linha.querySelector('td');
+        if (primeiraCelula) {
+          const dataTexto = primeiraCelula.innerText.trim();
+          if (dataTexto) datasEncontradas.add(dataTexto);
+        }
+      });
+
+      let menuHTML = `<button data-filter="todas">Todas as datas</button>`;
+      datasEncontradas.forEach(data => {
+        menuHTML += `<button data-filter="${data}">${data}</button>`;
+      });
+
+      filterMenu.innerHTML = menuHTML;
+
+      document.querySelectorAll('.filter-menu button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          dataFiltroAtual = this.getAttribute('data-filter');
+          filterBtn.innerHTML = dataFiltroAtual === 'todas' ? `Filtro ⌄` : `Data: ${this.innerText} ⌄`;
+          filterMenu.style.display = 'none';
+          filtrarTabela();
+        });
+      });
+    }
 
     filterBtn.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -270,16 +299,6 @@
       filterMenu.style.display = filterMenu.style.display === 'block' ? 'none' : 'block';
     });
 
-    document.querySelectorAll('.filter-menu button').forEach(btn => {
-      btn.addEventListener('click', function() {
-        dataFiltroAtual = this.getAttribute('data-filter');
-        filterBtn.innerHTML = `Data: ${this.innerText} ⌄`;
-        filterMenu.style.display = 'none';
-        filtrarTabela();
-      });
-    });
-
-    const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('input', filtrarTabela);
 
     function filtrarTabela() {
@@ -305,55 +324,15 @@
 
     function ReadTextoLinhaCompleta(linha) {
       let texto = '';
-      const celulas = linha.querySelectorAll('td');
-      for(let i = 0; i < celulas.length - 1; i++) {
-        texto += celulas[i].innerText + ' ';
-      }
+      const celulas = dynamicCelulasValidas(linha);
+      celulas.forEach(celula => texto += celula.innerText + ' ');
       return texto.toLowerCase();
     }
 
+    function dynamicCelulasValidas(linha) {
+      const arr = Array.from(linha.querySelectorAll('td'));
+      return arr.slice(0, arr.length - 1);
+    }
+
     document.querySelectorAll('.options').forEach(option => {
-      option.addEventListener('click', function(e) {
-        e.stopPropagation();
-        filterMenu.style.display = 'none';
-        document.querySelectorAll('.crud-menu').forEach(menu => {
-          if(menu !== option.querySelector('.crud-menu')) {
-            menu.style.display = 'none';
-          }
-        });
-        const menu = option.querySelector('.crud-menu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-      });
-    });
-
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.crud-menu').forEach(menu => menu.style.display = 'none');
-      filterMenu.style.display = 'none';
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const row = btn.closest('tr');
-        row.remove();
-      });
-    });
-
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const row = btn.closest('tr');
-        const cells = row.querySelectorAll('td');
-        for(let i = 0; i < cells.length - 1; i++) {
-          const current = cells[i].innerText;
-          const input = prompt(`Editar valor:`, current);
-          if(input !== null && input.trim() !== '') {
-            cells[i].innerText = input;
-          }
-        }
-        filtrarTabela();
-      });
-    });
-  </script>
-</body>
-</html>
+      option.addEventListener('click', function
