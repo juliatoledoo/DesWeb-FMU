@@ -83,13 +83,17 @@ header {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 100px 150px;
-    min-height: 85vh; 
+    flex-wrap: wrap; 
+    gap: 30px;      
     
-    background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('../img/about.png');
+    padding: 120px 40px; 
+    
+    background-image: linear-gradient(to right, rgba(30, 0, 52, 0.95) 40%, rgba(30, 0, 52, 0.3) 100%), url('img/about.png');
     background-size: cover;
     background-position: right center;
     background-repeat: no-repeat;
+    
+    width: 100%;
 }
 
 .hero2 {
