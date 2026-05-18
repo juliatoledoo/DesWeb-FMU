@@ -9,7 +9,8 @@
 <body class="container cadastro">
   <div class="cadastro-box">
     <h1>CRIE SEU CADASTRO</h1>
-    <form>
+    
+    <form onsubmit="window.location.href='../Dashboard.html'; return false;">
       <label for="nome">Nome</label>
       <input type="text" id="nome" placeholder="Digite seu nome" required />
 
@@ -19,7 +20,9 @@
       <label for="senha">Senha</label>
       <input type="password" id="senha" placeholder="Digite sua senha" required />
  
-      <a href="../Dashboard.html" class="button-link" style="display: block; margin-top: 30px; text-align: center;">CONTINUAR</a>
+      <button type="submit" class="button-link" style="display: block; margin-top: 30px; text-align: center; width: 100%; border: none; cursor: pointer;">
+        CONTINUAR
+      </button>
     </form>
   </div>
 </body>
