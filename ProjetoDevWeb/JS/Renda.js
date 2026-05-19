@@ -47,40 +47,10 @@ function salvarRenda() {
     const outrasRendas = limpar(inputOutras);
     
     const valorDescontoINSS = calcularINSS(salarioBruto);
-    
     const rendaBrutaTotal = salarioBruto + outrasRendas;
 
     localStorage.setItem("totalRenda", rendaBrutaTotal.toFixed(2));
     localStorage.setItem("descontoINSS", valorDescontoINSS.toFixed(2));
-    
-    let tipoContratoTexto = localStorage.getItem("tipoContrato") || "Contrato";
-
-    tipoContratoTexto = tipoContratoTexto.toUpperCase(); 
-
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
-    const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + 'hs';
-
-    const valorRecebidoFormatado = rendaBrutaTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    
-    const valorGastosInicial = "Calculando..."; 
-    const valorSobraInicial = valorRecebidoFormatado;
-
-    let listaSimulacoes = JSON.parse(localStorage.getItem('listaSimulacoes')) || [];
-
-    const novaSimulacao = {
-        id: Date.now(), 
-        data: dataFormatada,
-        hora: horaFormatada,
-        contrato: tipoContratoTexto,
-        recebido: valorRecebidoFormatado,
-        gastos: valorGastosInicial,
-        sobra: valorSobraInicial
-    };
-
-    listaSimulacoes.push(novaSimulacao);
-
-    localStorage.setItem('listaSimulacoes', JSON.stringify(listaSimulacoes));
 
     window.location.href = "Gastos.html";
 }
