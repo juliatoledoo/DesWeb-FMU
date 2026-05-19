@@ -24,38 +24,43 @@ window.onload = function() {
         mensagem.style.color = "#00ff88";
     }
 
-    const rendaTexto = document.getElementById("res-renda").innerText;
-    const gastosTexto = document.getElementById("res-gastos").innerText;
-    const saldoTexto = document.getElementById("res-saldo").innerText;
+    try {
+        let tipoContratoTexto = localStorage.getItem("tipoContrato") || "Contrato";
+        tipoContratoTexto = tipoContratoTexto.toUpperCase();
 
-    let tipoContratoTexto = localStorage.getItem("tipoContrato") || "Contrato";
-    tipoContratoTexto = tipoContratoTexto.toUpperCase();
+        const agora = new Date();
+        const dataFormatada = agora.toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit"
+        });
+        const horaFormatada = agora.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit"
+        }) + "hs";
 
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "2-digit"
-    });
-    const horaFormatada = agora.toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit"
-    }) + "hs";
+        let listaSimulacoes = [];
+        const dadosLocais = localStorage.getItem("listaSimulacoes");
+        
+        if (dadosLocais) {
+            listaSimulacoes = JSON.parse(dadosLocais);
+        }
 
-    let listaSimulacoes = JSON.parse(localStorage.getItem("listaSimulacoes")) || [];
+        const novaSimulacao = {
+            id: Date.now(),
+            data: dataFormatada,
+            hora: horaFormatada,
+            contrato: tipoContratoTexto,
+            recebido: formatar(renda),
+            gastos: formatar(gastos),
+            sobra: formatar(saldo)
+        };
 
-    const novaSimulacao = {
-        id: Date.now(),
-        data: dataFormatada,
-        hora: horaFormatada,
-        contrato: tipoContratoTexto,
-        recebido: rendaTexto,
-        gastos: gastosTexto,
-        sobra: saldoTexto
-    };
-
-    listaSimulacoes.push(novaSimulacao);
-    localStorage.setItem("listaSimulacoes", JSON.stringify(listaSimulacoes));
+        listaSimulacoes.push(novaSimulacao);
+        localStorage.setItem("listaSimulacoes", JSON.stringify(listaSimulacoes));
+    } catch (erro) {
+        console.error("Erro ao salvar o histórico:", erro);
+    }
 };
 
 function voltarInicio() {
