@@ -194,7 +194,7 @@
   </header>
 
   <div class="simulacao-btn">
-    <a href="ProjetoDevWeb/simulador.html">Faça uma simulação agora!</a>
+    <a href="./ProjetoDevWeb/simulador.html">Faça uma simulação agora!</a>
   </div>
 
   <div class="search-bar">
@@ -227,8 +227,8 @@
     let dataFiltroAtual = 'todas';
 
     const registrosPadrao = [
-      { id: 1, data: '15/01/25', hora: '9:30hs', contrato: 'Contrato', recebido: 'R$ 1.500', gastos: 'R$ 200 de investimento', sobra: 'R$ 1.300' },
-      { id: 2, data: '15/01/25', hora: '9:30hs', contrato: 'CLT', recebido: 'R$ 5.000', gastos: 'R$ 500 de investimento', sobra: 'R$ 4.500' }
+      { id: 1, data: '15/01/25', hour: '9:30hs', contrato: 'Contrato', recebido: 'R$ 1.500,00', gastos: 'R$ 200,00', sobra: 'R$ 1.300,00' },
+      { id: 2, data: '15/01/25', hour: '9:30hs', contrato: 'CLT', recebido: 'R$ 5.000,00', gastos: 'R$ 500,00', sobra: 'R$ 4.500,00' }
     ];
 
     if (!localStorage.getItem('listaSimulacoes')) {
@@ -240,16 +240,15 @@
     function renderizarTabela() {
       const lista = JSON.parse(localStorage.getItem('listaSimulacoes')) || [];
       const tbody = document.getElementById('table-body');
-      tbody.innerHTML = ''; 
+      tbody.innerHTML = '';
 
       lista.forEach(reg => {
         const tr = document.createElement('tr');
-
         tr.setAttribute('data-id', reg.id); 
         
         tr.innerHTML = `
           <td>${reg.data}</td>
-          <td>${reg.hora}</td>
+          <td>${reg.hora || reg.hour || '9:30hs'}</td>
           <td>${reg.contrato}</td>
           <td>${reg.recebido}</td>
           <td>${reg.gastos}</td>
@@ -323,9 +322,7 @@
       const idDeletar = parseInt(row.getAttribute('data-id'));
 
       let lista = JSON.parse(localStorage.getItem('listaSimulacoes')) || [];
-      
       lista = lista.filter(item => item.id !== idDeletar);
-
       localStorage.setItem('listaSimulacoes', JSON.stringify(lista));
 
       renderizarTabela();
@@ -345,7 +342,7 @@
       };
 
       localStorage.setItem('dadosSimulacaoEdicao', JSON.stringify(dadosEdicao));
-      window.location.href = 'ProjetoDevWeb/Rendas.html';
+      window.location.href = './ProjetoDevWeb/Rendas.html';
     }
 
     function fecharTodosMenus() {
