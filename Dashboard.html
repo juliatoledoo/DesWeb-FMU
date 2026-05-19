@@ -88,11 +88,6 @@
       display: flex;
       align-items: center;   
       justify-content: center;
-      transition: background-color 0.2s;
-    }
-
-    .filter-btn:hover {
-      background-color: #ddd;
     }
 
     .filter-menu {
@@ -118,7 +113,6 @@
       text-align: left;
       cursor: pointer;
       font-size: 0.9rem;
-      font-weight: 500;
     }
 
     .filter-menu button:hover {
@@ -206,7 +200,10 @@
   <div class="search-bar">
     <div class="filter-container">
       <button class="filter-btn" id="filter-main-btn">Filtro</button>
-      <div class="filter-dropdown"></div>
+      <div class="filter-menu" id="filter-dropdown">
+        <button data-filter="todas">Todas as datas</button>
+        <button data-filter="15/01/25">15/01/25</button>
+      </div>
     </div>
     <input type="text" id="search-input" placeholder="Procure a análise que você fez" />
   </div>
@@ -230,6 +227,7 @@
         <td>Contrato</td>
         <td>R$ 1.500</td>
         <td>R$ 200 de investimento</td>
+        <td>R$ 1.300</td>
         <td>
           <div class="options">⋮
             <div class="crud-menu">
@@ -245,6 +243,7 @@
         <td>CLT</td>
         <td>R$ 5.000</td>
         <td>R$ 500 de investimento</td>
+        <td>R$ 4.500</td>
         <td>
           <div class="options">⋮
             <div class="crud-menu">
@@ -265,43 +264,20 @@
       const filterMenu = document.getElementById('filter-dropdown');
       const searchInput = document.getElementById('search-input');
 
-      atualizarOpcoesDeFiltro();
-      configurarEventosTabela();
-
-      function atualizarOpcoesDeFiltro() {
-        const linhas = document.querySelectorAll('#table-body tr');
-        const datasEncontradas = new Set();
-
-        linhas.forEach(linha => {
-          const primeiraCelula = linha.querySelector('td');
-          if (primeiraCelula) {
-            const dataTexto = primeiraCelula.innerText.trim();
-            if (dataTexto) datasEncontradas.add(dataTexto);
-          }
-        });
-
-        let menuHTML = `<button data-filter="todas">Filtro ⌄</button>`;
-        datasEncontradas.forEach(data => {
-          menuHTML += `<button data-filter="${data}">${data}</button>`;
-        });
-
-        filterMenu.innerHTML = menuHTML;
-
-        filterMenu.querySelectorAll('button').forEach(btn => {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dataFiltroAtual = this.getAttribute('data-filter');
-            filterBtn.innerHTML = dataFiltroAtual === 'todas' ? `Filtro ⌄` : `Data: ${this.innerText} ⌄`;
-            filterMenu.style.display = 'none';
-            filtrarTabela();
-          });
-        });
-      }
-
       filterBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         document.querySelectorAll('.crud-menu').forEach(m => m.style.display = 'none');
         filterMenu.style.display = (filterMenu.style.display === 'block') ? 'none' : 'block';
+      });
+
+      filterMenu.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dataFiltroAtual = this.getAttribute('data-filter');
+          filterBtn.innerHTML = dataFiltroAtual === 'todas' ? `Filtro` : `Data: ${dataFiltroAtual}`;
+          filterMenu.style.display = 'none';
+          filtrarTabela();
+        });
       });
 
       searchInput.addEventListener('input', filtrarTabela);
@@ -311,9 +287,9 @@
         const linhas = document.querySelectorAll('#table-body tr');
 
         linhas.forEach(linha => {
-          if (!linha.querySelector('td')) return;
+          if (!linha.querySelector('td')) return; 
 
-          const textoDaLinha = ReadTextoLinhaCompleta(linha);
+          const textoDaLinha = linha.innerText.toLowerCase();
           const colunaData = linha.querySelectorAll('td')[0].innerText.trim();
 
           const bateData = (dataFiltroAtual === 'todas' || colunaData === dataFiltroAtual);
@@ -327,64 +303,45 @@
         });
       }
 
-      function ReadTextoLinhaCompleta(linha) {
-        let texto = '';
-        const celulas = Array.from(linha.querySelectorAll('td'));
-        const celulasValidas = celulas.slice(0, celulas.length - 1);
-        celulasValidas.forEach(celula => texto += celula.innerText + ' ');
-        return texto.toLowerCase();
-      }
+      document.querySelectorAll('.options').forEach(option => {
+        option.addEventListener('click', function(e) {
+          e.stopPropagation();
+          filterMenu.style.display = 'none';
+          
+          const menuAtual = this.querySelector('.crud-menu');
+          document.querySelectorAll('.crud-menu').forEach(m => {
+            if (m !== menuAtual) m.style.display = 'none';
+          });
 
-      function configurarEventosTabela() {
-
-        document.querySelectorAll('.options').forEach(option => {
-          option.onclick = function(e) {
-            e.stopPropagation();
-            filterMenu.style.display = 'none'; 
-            
-            const menu = this.querySelector('.crud-menu');
-            document.querySelectorAll('.crud-menu').forEach(m => {
-              if (m !== menu) m.style.display = 'none';
-            });
-
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-          };
+          menuAtual.style.display = (menuAtual.style.display === 'block') ? 'none' : 'block';
         });
+      });
 
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-          btn.onclick = function(e) {
-            e.stopPropagation();
-            const row = this.closest('tr');
-            row.remove();
-            atualizarOpcoesDeFiltro();
-            filtrarTabela();
-          };
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          this.closest('tr').remove();
         });
+      });
 
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-          btn.onclick = function(e) {
-            e.stopPropagation();
-            const row = this.closest('tr');
-            const cells = row.querySelectorAll('td');
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const row = this.closest('tr');
+          const cells = row.querySelectorAll('td');
 
-            const tipoRenda = cells[2].innerText.trim(); 
-            const valorRecebido = cells[3].innerText.replace('R$', '').replace(/\./g, '').trim(); 
-            
-            const valorFinalTexto = cells[4].innerText;
-            const matchInvestimento = valorFinalTexto.match(/\d+(\.\d+)?/);
-            const valorInvestimento = matchInvestimento ? matchInvestimento[0] : "";
-
-            const dadosEdicao = {
-              renda: tipoRenda,
-              valor: valorRecebido,
-              investimento: valorInvestimento
-            };
-
-            localStorage.setItem('dadosSimulacaoEdicao', JSON.stringify(dadosEdicao));
-            window.location.href = 'ProjetoDevWeb/Rendas.html';
+          const tipoRenda = cells[2].innerText.trim(); 
+          const valorRecebido = cells[3].innerText.replace('R$', '').replace(/\./g, '').trim(); 
+          
+          const dadosEdicao = {
+            renda: tipoRenda,
+            valor: valorRecebido
           };
+
+          localStorage.setItem('dadosSimulacaoEdicao', JSON.stringify(dadosEdicao));
+          window.location.href = 'ProjetoDevWeb/Rendas.html';
         });
-      }
+      });
 
       document.addEventListener('click', function() {
         document.querySelectorAll('.crud-menu').forEach(m => m.style.display = 'none');
