@@ -113,6 +113,7 @@
       text-align: left;
       cursor: pointer;
       font-size: 0.9rem;
+      font-weight: 500;
     }
 
     .filter-menu button:hover {
@@ -200,10 +201,7 @@
   <div class="search-bar">
     <div class="filter-container">
       <button class="filter-btn" id="filter-main-btn" onclick="toggleFiltro(event)">Filtro</button>
-      <div class="filter-menu" id="filter-dropdown">
-        <button onclick="selecionarFiltro('todas', 'Filtro', event)">Todas as datas</button>
-        <button onclick="selecionarFiltro('15/01/25', '15/01/25', event)">15/01/25</button>
-      </div>
+      <div class="filter-menu" id="filter-dropdown"></div>
     </div>
     <input type="text" id="search-input" oninput="filtrarTabela()" placeholder="Procure a análise que você fez" />
   </div>
@@ -227,15 +225,17 @@
     let dataFiltroAtual = 'todas';
 
     const registrosPadrao = [
-      { id: 1, data: '15/01/25', hour: '9:30hs', contrato: 'Contrato', recebido: 'R$ 1.500,00', gastos: 'R$ 200,00', sobra: 'R$ 1.300,00' },
-      { id: 2, data: '15/01/25', hour: '9:30hs', contrato: 'CLT', recebido: 'R$ 5.000,00', gastos: 'R$ 500,00', sobra: 'R$ 4.500,00' }
+      { id: 1, data: '15/01/25', hora: '9:30hs', contrato: 'Contrato', recebido: 'R$ 1.500,00', gastos: 'R$ 200,00', sobra: 'R$ 1.300,00' },
+      { id: 2, data: '15/01/25', hora: '9:30hs', contrato: 'CLT', recebido: 'R$ 5.000,00', gastos: 'R$ 500,00', sobra: 'R$ 4.500,00' }
     ];
 
     if (!localStorage.getItem('listaSimulacoes')) {
       localStorage.setItem('listaSimulacoes', JSON.stringify(registrosPadrao));
     }
 
-    document.addEventListener("DOMContentLoaded", renderizarTabela);
+    document.addEventListener("DOMContentLoaded", function() {
+      renderizarTabela();
+    });
 
     function renderizarTabela() {
       const lista = JSON.parse(localStorage.getItem('listaSimulacoes')) || [];
@@ -248,7 +248,7 @@
         
         tr.innerHTML = `
           <td>${reg.data}</td>
-          <td>${reg.hora || reg.hour || '9:30hs'}</td>
+          <td>${reg.hora || '9:30hs'}</td>
           <td>${reg.contrato}</td>
           <td>${reg.recebido}</td>
           <td>${reg.gastos}</td>
@@ -265,7 +265,24 @@
         tbody.appendChild(tr);
       });
       
+      atualizarOpcoesDeFiltro(lista);
       filtrarTabela();
+    }
+
+    function atualizarOpcoesDeFiltro(lista) {
+      const filterMenu = document.getElementById('filter-dropdown');
+      const datasEncontradas = new Set();
+
+      lista.forEach(item => {
+        if (item.data) datasEncontradas.add(item.data.trim());
+      });
+
+      let menuHTML = `<button onclick="selecionarFiltro('todas', 'Filtro', event)">Todas as datas</button>`;
+      datasEncontradas.forEach(data => {
+        menuHTML += `<button onclick="selecionarFiltro('${data}', '${data}', event)">${data}</button>`;
+      });
+
+      filterMenu.innerHTML = menuHTML;
     }
 
     function toggleFiltro(e) {
