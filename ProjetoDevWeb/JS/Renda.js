@@ -1,12 +1,10 @@
 function calcularINSS(salario) {
     const tipo = localStorage.getItem("tipoContrato");
     
-    // Se não for CLT, o desconto é ZERO
     if (tipo !== "clt") return 0;
 
     let inss = 0;
 
-    // Tabela progressiva do INSS 2026
     if (salario <= 1412.00) {
         inss = salario * 0.075;
     } else if (salario <= 2666.68) {
@@ -48,16 +46,41 @@ function salvarRenda() {
     const salarioBruto = limpar(inputSalario);
     const outrasRendas = limpar(inputOutras);
     
-    // 1. Calcula o INSS APENAS sobre o salário bruto
     const valorDescontoINSS = calcularINSS(salarioBruto);
     
-    // 2. Renda Total (Sem descontos ainda) para o Dashboard mostrar o Bruto
     const rendaBrutaTotal = salarioBruto + outrasRendas;
 
-    // PERSISTÊNCIA
-    // Guardamos a Renda Total (2.000 no seu exemplo) e o desconto isolado
     localStorage.setItem("totalRenda", rendaBrutaTotal.toFixed(2));
     localStorage.setItem("descontoINSS", valorDescontoINSS.toFixed(2));
+    
+    let tipoContratoTexto = localStorage.getItem("tipoContrato") || "Contrato";
+
+    tipoContratoTexto = tipoContratoTexto.toUpperCase(); 
+
+    const agora = new Date();
+    const dataFormatada = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+    const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + 'hs';
+
+    const valorRecebidoFormatado = rendaBrutaTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    
+    const valorGastosInicial = "Calculando..."; 
+    const valorSobraInicial = valorRecebidoFormatado;
+
+    let listaSimulacoes = JSON.parse(localStorage.getItem('listaSimulacoes')) || [];
+
+    const novaSimulacao = {
+        id: Date.now(), 
+        data: dataFormatada,
+        hora: horaFormatada,
+        contrato: tipoContratoTexto,
+        recebido: valorRecebidoFormatado,
+        gastos: valorGastosInicial,
+        sobra: valorSobraInicial
+    };
+
+    listaSimulacoes.push(novaSimulacao);
+
+    localStorage.setItem('listaSimulacoes', JSON.stringify(listaSimulacoes));
 
     window.location.href = "Gastos.html";
 }
